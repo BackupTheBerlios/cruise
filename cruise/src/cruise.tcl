@@ -19,7 +19,7 @@
 # cruise.tcl 
 # 
 
-# $Id: cruise.tcl,v 1.4 2002/03/10 18:49:39 klauko70 Exp $
+# $Id: cruise.tcl,v 1.5 2002/03/15 19:05:39 klauko70 Exp $
 #
 #
 
@@ -28,6 +28,7 @@
 namespace eval cruise {
 
     image create photo reload -file ../images/reload.gif
+    image create photo help -file ../images/help.gif
 
 
     namespace eval env {
@@ -46,7 +47,7 @@ namespace eval cruise {
 	
 	# gui style (widget specific)
 	variable reload_button     yes
-	variable help_button       no ;# ????? not yet implemented ?????
+	variable help_button       yes
 
 	# save options
 	variable create_backup_files     yes
@@ -95,6 +96,11 @@ namespace eval cruise {
 	proc -t {value} {
 	    variable ::cruise::env::text
 	    set ::cruise::env::text $value
+	}
+
+	proc -h {value} {
+	    variable ::cruise::env::help
+	    set ::cruise::env::help $value
 	}
 
 	proc -c {value} {
@@ -162,6 +168,32 @@ namespace eval cruise {
 
 
 
+
+    variable epilog {
+	# install help button
+	if {$env::help_button} {
+	    if {$env::help == ""} {
+		::button $w.$f.hb -image help -state disabled -command \
+		    "::cruise::gui::create_help_win {$::cruise::env::help}"
+	    } else {
+		::button $w.$f.hb -image help -state normal -command \
+		    "::cruise::gui::create_help_win {$::cruise::env::help}"
+	    }
+	    pack $w.$f.hb -side right 
+	} 
+
+	# install reload button 
+	if {$env::reload_button} {
+	    ::button $w.$f.rb -image reload -command \
+		"::cruise::database::write $interp::id textvar [::cruise::replacer::get $interp::id]" 
+	    pack $w.$f.rb -side right
+	} 
+    }
+
+
+
+
+
     proc MARK {args} {
 	
 	variable prolog
@@ -198,6 +230,7 @@ namespace eval cruise {
 	variable env::text
 
 	variable prolog
+	variable epilog
 	eval $prolog
 
 	database::write $interp::id need_replacement yes
@@ -213,17 +246,12 @@ namespace eval cruise {
 	set textvar [database::write $interp::id textvar ""] 
 
 	::entry $w.$f.e -textvariable $textvar
-	pack $w.$f.e -side left
+	pack $w.$f.e -side left -expand yes -anchor e -padx 10
 	
 	# fill the textvar (the entry)
 	database::write $interp::id textvar [::cruise::replacer::get $interp::id]
 
-	# install reload button # ????? maybe we can do this in an 'epilog' ?????
-	if {$env::reload_button} {
-	    ::button $w.$f.rb -image reload -command \
-		"::cruise::database::write $interp::id textvar [::cruise::replacer::get $interp::id]" 
-	    pack $w.$f.rb -side right
-	}
+	eval $epilog
     }
 
 
@@ -235,6 +263,7 @@ namespace eval cruise {
 	variable env::option_list
 
 	variable prolog
+	variable epilog
 	eval $prolog
 
 	database::write $interp::id need_replacement yes
@@ -251,17 +280,12 @@ namespace eval cruise {
 
 	eval ::tk_optionMenu $w.$f.mb $textvar $option_list 
 	   # 'eval' is necessary to turn the option_list into it's component parts
-	pack $w.$f.mb -side left
+	pack $w.$f.mb -side left -expand yes -anchor e -padx 10
 	
 	# fill the textvar (the menubutton value)
 	database::write $interp::id textvar [::cruise::replacer::get $interp::id]
 
-	# install reload button # ????? maybe we can do this in an 'epilog' ?????
-	if {$env::reload_button} {
-	    ::button $w.$f.rb -image reload -command \
-		"::cruise::database::write $interp::id textvar [::cruise::replacer::get $interp::id]" 
-	    pack $w.$f.rb -side right
-	}
+	eval $epilog
     }
 
 
