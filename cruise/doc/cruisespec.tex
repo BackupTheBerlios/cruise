@@ -1,0 +1,87 @@
+%
+% $Id: cruisespec.tex,v 1.1 2001/08/03 20:17:16 klauko70 Exp $
+%
+\documentclass[german,12pt,a4paper,oneside]{article}
+\usepackage{babel,isolatin1,epsfig,psfig,tabularx,times,fancyheadings,relsize}
+\pagestyle{plain}
+
+
+\title{\center{\includegraphics[scale=0.5]{cruise_logo.eps}}\\}
+\author{Wolfgang Schrempp \& Klaus Konzept \\	
+        \small{http://cruise.berlios.de}
+       }
+
+
+\begin{document}
+
+%%%%%%%%%%%% eigene Kommandos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\cruise}{C\smaller R\smaller\smaller UI\larger\larger S\larger E}
+
+%% klk -> define a new environment for source code 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\maketitle
+
+\newpage
+
+{\LARGE Widmung}
+\newline
+
+Für ..... 
+
+\newpage
+
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+%\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{arabic}
+
+
+%%%%%%%%%%%% Kapitel 1 %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{intro.tex}
+
+
+%%%%%%%%%%%% Kapitel 2 %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{definitions.tex}
+
+%%%%%%%%%%%% Kapitel 3 %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{features.tex }
+
+%%%%%%%%%%%% Kapitel 4 %%%%%%%%%%%%%%%%%%%%%%%%%
+\input{commands.tex}
+
+\input{cruise_message.tex}
+\input{cruise_listbox.tex}
+
+
+
+%%%%%%%%%%%%%%%%Anhang %%%%%%%%%%%%%
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
