@@ -19,7 +19,7 @@
 # gui.tcl 
 # 
 
-# $Id: gui.tcl,v 1.3 2002/02/23 18:37:09 klauko70 Exp $
+# $Id: gui.tcl,v 1.4 2002/03/10 18:56:33 klauko70 Exp $
 #
 #
 
@@ -89,9 +89,13 @@ namespace eval cruise::gui {
 
 	    progress_bar start
 
-	    # enable 'cruise->save changes' menu
-	    set save_changes_menu [.mbar.cruise index "Save changes..."]  
-	    .mbar.cruise entryconfigure $save_changes_menu -state normal
+	    # enable 'file->save' menu
+	    set save_menu [.mbar.file index "Save"]  
+	    .mbar.file entryconfigure $save_menu -state normal
+
+	    # enable 'file->save as...' menu
+	    set save_as_menu [.mbar.file index "Save as..."]  
+	    .mbar.file entryconfigure $save_as_menu -state normal
 
 	    catch [destroy .logo]
 
@@ -105,51 +109,137 @@ namespace eval cruise::gui {
 
 
 
-    proc save_changes {} {
+    proc file_save {} {
+
+	::cruise::replacer::replace
+    }
+
+
+
+
+    proc file_preferences_save {} {
 
 	variable root_frame
+	variable ::cruise::env::backup_files_extension
+	variable ::cruise::env::diff_files_extension
+	variable ::cruise::env::create_backup_files
+	variable ::cruise::env::create_diff_files
+	variable ::cruise::env::remove_cruise_lines
+	global backup_files_extension
+	global diff_files_extension
+	global create_backup_files
+	global create_diff_files
+	global remove_cruise_lines
 
-	set w .save_changes
+	set w .file_preferences_save
 	catch {destroy $w}
 	toplevel $w
-	wm title $w "Save changes"
+	wm title $w "Preferences - Save"
 	wm resizable $w no no
 	set x [expr [winfo rootx $root_frame] + 50]
 	set y [expr [winfo rooty $root_frame] + 50]
 	wm geometry $w "+$x+$y"
 	wm transient $w .
 	focus $w
+	
+	set backup_files_extension $::cruise::env::backup_files_extension
+	set diff_files_extension $::cruise::env::diff_files_extension
+	set create_backup_files $::cruise::env::create_backup_files
+	set create_diff_files $::cruise::env::create_diff_files
+	set remove_cruise_lines $::cruise::env::remove_cruise_lines
 
 	# options #
 	frame $w.options -relief groove -borderwidth 3
 	pack $w.options -side top -fill x -anchor s -padx 5 -pady 5
-	
-	checkbutton $w.options.backup -text "create backup files" 
-	pack $w.options.backup -side top -anchor w
-
-	checkbutton $w.options.diff -text "create diff files"
-	pack $w.options.diff -side top -anchor w
-
-	checkbutton $w.options.remove -text "remove cruise lines"
-	pack $w.options.remove -side top -anchor w
 
 
-	label $w.options.not_yet -text "not yet implemented, just hit 'OK'" -fg red
-	pack $w.options.not_yet -side top -anchor w
+	frame $w.options.backup -relief groove -borderwidth 1
+	pack $w.options.backup -side top -fill x -anchor s -padx 5 -pady 5
+
+	checkbutton $w.options.backup.cb1 -text "create backup files" \
+	    -variable create_backup_files -onvalue yes -offvalue no \
+	    -command {
+		set w .file_preferences_save
+		if {$create_backup_files} {
+		    $w.options.backup.e1 configure -state normal
+		} else {
+		    $w.options.backup.e1 configure -state disabled
+		}
+	    }
+	pack $w.options.backup.cb1 -side top -anchor w
+
+	label $w.options.backup.l1 -text "backup files extension:"
+	pack $w.options.backup.l1 -side left -anchor w
+
+	entry $w.options.backup.e1 -width 5 -textvariable backup_files_extension 
+	pack $w.options.backup.e1 -side right -pady 5 -padx 5
+
+
+	frame $w.options.diff -relief groove -borderwidth 1
+	pack $w.options.diff -side top -fill x -anchor s -padx 5 -pady 5
+
+	checkbutton $w.options.diff.cb1 -text "create diff files" \
+	    -variable create_diff_files -onvalue yes -offvalue no \
+	    -command {
+		set w .file_preferences_save
+		if {$create_diff_files} {
+		    $w.options.diff.e1 configure -state normal
+		} else {
+		    $w.options.diff.e1 configure -state disabled
+		}
+	    }	
+	pack $w.options.diff.cb1 -side top -anchor w
+
+	label $w.options.diff.l1 -text "diff files extension:"
+	pack $w.options.diff.l1 -side left -anchor w
+
+	entry $w.options.diff.e1 -width 5 -textvariable diff_files_extension
+	pack $w.options.diff.e1 -side right -pady 5 -padx 5
+
+
+	frame $w.options.remove -relief groove -borderwidth 1
+	pack $w.options.remove -side top -fill x -anchor s -padx 5 -pady 5
+
+	checkbutton $w.options.remove.cb1 -text "remove cruise lines" \
+	    -variable remove_cruise_lines -onvalue yes -offvalue no
+	pack $w.options.remove.cb1 -side top -anchor w
 
 
 	# buttons #
 	frame $w.buttons 
 	pack $w.buttons -side bottom -fill x -anchor s
 
-	button $w.buttons.ok -text "OK" -width 10 \
-	    -command "::cruise::replacer::replace; destroy $w"
+	button $w.buttons.ok -text "OK" -width 10 -command {
+	    set w .file_preferences_save
+	    set ::cruise::env::backup_files_extension $backup_files_extension
+	    set ::cruise::env::diff_files_extension $diff_files_extension
+	    set ::cruise::env::create_backup_files $create_backup_files
+	    set ::cruise::env::create_diff_files $create_diff_files
+	    set ::cruise::env::remove_cruise_lines $remove_cruise_lines
+
+	    destroy $w
+	}
+
 	pack $w.buttons.ok -side left -padx 10 -pady 5
 
 	button $w.buttons.cancel -text "Cancel" -width 10 \
 	    -command "destroy $w"
 	pack $w.buttons.cancel -side right -padx 10 -pady 5
+
+	
+	if {$create_backup_files} {
+	    $w.options.backup.e1 configure -state normal
+	} else {
+	    $w.options.backup.e1 configure -state disabled
+	}
+	if {$create_diff_files} {
+	    $w.options.diff.e1 configure -state normal
+	} else {
+	    $w.options.diff.e1 configure -state disabled
+	}
+
     }
+
 
 
 
@@ -201,14 +291,25 @@ namespace eval cruise::gui {
 	menu .mbar.file -tearoff 0
 	.mbar.file add command -label "Open..." -underline 0 \
 	    -command [namespace current]::file_open
+	.mbar.file add command -label "Save" -underline 0 -state disabled \
+	    -command [namespace current]::file_save
+	.mbar.file add command -label "Save as..." -underline 1 -state disabled \
+	    -command [namespace current]::file_save_as
+	.mbar.file add separator
+	.mbar.file add cascade -label "Preferences" -underline 0 \
+	    -menu .mbar.file.preferences 
+
+	menu .mbar.file.preferences -tearoff 0
+	.mbar.file.preferences add command -label "Save..." -underline 0 \
+	    -command [namespace current]::file_preferences_save
+	.mbar.file.preferences add command -label "User Interface..." -underline 0 \
+	    -command [namespace current]::file_preferences_userinterface
+
 	.mbar.file add separator
 	.mbar.file add command -label "Quit" -underline 0 \
 	    -command [namespace current]::cruise_exit
 	
 	menu .mbar.cruise -tearoff 0
-	.mbar.cruise add command -label "Save changes..." -underline 0 \
-	    -state disabled -command [namespace current]::save_changes
-	.mbar.cruise add separator	
 	.mbar.cruise add command -label "Remove cruise lines..." -underline 0 \
 	    -command "not_implemented"
 	
