@@ -19,7 +19,7 @@
 # replacer.tcl 
 # 
 
-# $Id: replacer.tcl,v 1.4 2002/03/10 18:59:56 klauko70 Exp $
+# $Id: replacer.tcl,v 1.5 2002/03/15 19:13:27 klauko70 Exp $
 #
 #
 
@@ -189,6 +189,7 @@ namespace eval cruise::replacer {
 	    set head_list [lrange $splited_list 0 [expr $field - 2]]
 	    set head [join $head_list $delimiter]$delimiter
 	    set match [lrange $splited_list [expr $field - 1] [expr $field - 1]]
+	    # ????? set match [join $match]
 	    set tail_list [lrange $splited_list $field end]
 	    set tail $delimiter[join $tail_list $delimiter]
 
