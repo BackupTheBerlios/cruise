@@ -19,7 +19,7 @@
 # cruise.tcl 
 # 
 
-# $Id: cruise.tcl,v 1.6 2002/03/28 18:37:11 klauko70 Exp $
+# $Id: cruise.tcl,v 1.7 2002/03/28 23:08:50 wolli Exp $
 #
 #
 
@@ -331,6 +331,9 @@ source database.tcl
 
 cruise::gui::create_main_win
 
+if {$argc != 0} {
+    cruise::gui::file_open $argv
+}
 
 
 
