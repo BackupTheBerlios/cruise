@@ -1,13 +1,13 @@
 %
-% $Id: cruise_message.tex,v 1.1 2001/08/03 20:17:16 klauko70 Exp $
+% $Id: cruise_message.tex,v 1.2 2002/02/12 22:15:32 wolli Exp $
 %
 \section{Kommando 'message'}
-message STRING
+\kw{message} \am{String}
 
 \subsection{look and feel}
 \includegraphics{cruise_message.eps}
 \subsection{Verhalten während Interpretation}
-Erzeugt eine Box mit dem Textinhalt STRING.
+Erzeugt eine Box mit dem Textinhalt \am{String}.
 
 \subsection{Verhalten bei Interaktion}
 Keine Interaktion möglich
@@ -16,11 +16,11 @@ Keine Interaktion möglich
 
 \verb*|message "Noch ein Text"|
 
-erzeugt eine Box mit dem Inhalt 'Noch ein Text'.
+erzeugt eine Box mit dem Inhalt: \op{Noch ein Text}.
 
 \verb*|message 41+1=[expr 41 + 1]|
 
-erzeugt eine Box mit dem Inhalt '41+1=42'
+erzeugt eine Box mit dem Inhalt: \op{41+1=42}.
 
 
 

@@ -1,26 +1,25 @@
 %
-% $Id: cruise_listbox.tex,v 1.1 2001/08/03 20:17:16 klauko70 Exp $
+% $Id: cruise_listbox.tex,v 1.2 2002/02/12 22:15:32 wolli Exp $
 %
 \section{Kommando 'listbox'}
-listbox LIST DEFAULT
+\kw{listbox} \am{Liste Feldreferenz}
 
 \subsection{look and feel}
 Das Bild zeigt die Listbox während der Interaktion.
 
 \includegraphics{cruise_listbox.eps}
 \subsection{Verhalten während Interpretation}
-Erzeugt eine Box mit dem Inhalt DEFAULT.
+Erzeugt eine Box mit dem Inhalt, welcher durch \am{Feldreferenz} referenziert wird.
 
 \subsection{Verhalten bei Interaktion}
-Wird die Box mit dem Inhalt DEFAULT angeklickt, so öffnet sich eine Auswahlliste
-mit den Einträgen wie sie in der Liste LIST angegeben wurden. Der Benutzer kann
+Wird die Box mit dem aktuellen Inhalt angeklickt, so öffnet sich eine Auswahlliste
+mit den Einträgen wie sie in \am{Liste} angegeben wurden. Der Benutzer kann
 nun durch Auswahl eines Listeneintrags den neuen Wert bestimmen. Die
-Auswahlliste verschwindet und anstelle des DEFAULT Wertes steht der neue
-ausgewählte Wert.
+Auswahlliste verschwindet und an die durch \am{Feldreferenz} angegebene 
+Stelle wird der ausgewählte Wert geschrieben.
 
 \subsection{Beispiel}
 
-\verb*|listbox {"2400 Baud" "9600 Baud" "19200 Baud"} "9600 Baud"|
+\verb*|listbox {"2400 Baud" "9600 Baud" "19200 Baud"} l:p1 c:3|
 
 erzeugt bei Interaktion eine Auswahlliste wie oben dargestellt.
-
