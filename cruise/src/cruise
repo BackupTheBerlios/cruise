@@ -1,2 +1,2 @@
 #!/bin/sh 
-exec wish cruise.tcl
+exec wish cruise.tcl $1
