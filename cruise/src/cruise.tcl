@@ -19,7 +19,7 @@
 # cruise.tcl 
 # 
 
-# $Id: cruise.tcl,v 1.3 2002/02/23 18:31:26 klauko70 Exp $
+# $Id: cruise.tcl,v 1.4 2002/03/10 18:49:39 klauko70 Exp $
 #
 #
 
@@ -40,8 +40,20 @@ namespace eval cruise {
 	variable machine           $tcl_platform(machine)
 	variable platform          $tcl_platform(platform)
 	
-	# gui style
+	# gui style (global)
+	variable status_line       yes ;# ????? not yet implemented ?????
+	variable menu_bar          yes ;# ????? not yet implemented ?????
+	
+	# gui style (widget specific)
 	variable reload_button     yes
+	variable help_button       no ;# ????? not yet implemented ?????
+
+	# save options
+	variable create_backup_files     yes
+	variable backup_files_extension  .bak
+	variable create_diff_files       no   ;# ????? not yet implemented ?????
+	variable diff_files_extension    .dif ;# ????? not yet implemented ?????
+	variable remove_cruise_lines     no   ;# ????? not yet implemented ?????
 
 	# reference parameter
 	variable line              0
@@ -60,6 +72,25 @@ namespace eval cruise {
 
     namespace eval param {
 	### cruise command parameter parser
+
+	proc -id {value} {
+	    variable ::cruise::interp::id
+	    variable ::cruise::env::$value
+	    set ::cruise::env::$value $::cruise::interp::id
+	}
+
+	proc -m {value} {
+	    set ::cruise::env::line \
+		[::cruise::database::read [set ::cruise::env::$value] line]
+	    set ::cruise::env::current_line \
+		[::cruise::database::read [set ::cruise::env::$value] current_line]
+	    set ::cruise::env::column \
+		[::cruise::database::read [set ::cruise::env::$value] column]
+	    set ::cruise::env::column_delimiter \
+		[::cruise::database::read [set ::cruise::env::$value] column_delimiter]
+	    set ::cruise::env::filename \
+		[::cruise::database::read [set ::cruise::env::$value] filename]
+	}
 
 	proc -t {value} {
 	    variable ::cruise::env::text
@@ -128,6 +159,17 @@ namespace eval cruise {
 	database::write  $interp::id  column_delimiter  $env::column_delimiter
 	database::write  $interp::id  filename          $env::filename
     }
+
+
+
+    proc MARK {args} {
+	
+	variable prolog
+	eval $prolog
+
+	database::write $interp::id need_replacement no
+    }
+
 
 
 
