@@ -19,7 +19,7 @@
 # gui.tcl 
 # 
 
-# $Id: gui.tcl,v 1.4 2002/03/10 18:56:33 klauko70 Exp $
+# $Id: gui.tcl,v 1.5 2002/03/15 19:12:24 klauko70 Exp $
 #
 #
 
@@ -243,6 +243,72 @@ namespace eval cruise::gui {
 
 
 
+
+    proc file_preferences_userinterface {} {
+
+	variable root_frame
+	variable ::cruise::env::reload_button
+	variable ::cruise::env::help_button
+	global reload_button
+	global help_button
+
+	set w .file_preferences_userinterface
+	catch {destroy $w}
+	toplevel $w
+	wm title $w "Preferences - User Interface"
+	wm resizable $w no no
+	set x [expr [winfo rootx $root_frame] + 50]
+	set y [expr [winfo rooty $root_frame] + 50]
+	wm geometry $w "+$x+$y"
+	wm transient $w .
+	focus $w
+	
+	set reload_button $::cruise::env::reload_button
+	set help_button $::cruise::env::help_button
+
+	# options #
+	frame $w.options -relief groove -borderwidth 3
+	pack $w.options -side top -fill x -anchor s -padx 5 -pady 5
+
+
+	frame $w.options.reload -relief groove -borderwidth 1
+	pack $w.options.reload -side top -fill x -anchor s -padx 5 -pady 5
+
+	checkbutton $w.options.reload.cb1 -text "enable reload button" \
+	    -variable reload_button -onvalue yes -offvalue no 
+	pack $w.options.reload.cb1 -side top -anchor w
+
+
+	frame $w.options.help -relief groove -borderwidth 1
+	pack $w.options.help -side top -fill x -anchor s -padx 5 -pady 5
+
+	checkbutton $w.options.help.cb1 -text "enable help button" \
+	    -variable help_button -onvalue yes -offvalue no 
+	pack $w.options.help.cb1 -side top -anchor w
+
+
+	# buttons #
+	frame $w.buttons 
+	pack $w.buttons -side bottom -fill x -anchor s
+
+	button $w.buttons.ok -text "OK" -width 10 -command {
+	    set w .file_preferences_userinterface
+	    set ::cruise::env::reload_button $reload_button
+	    set ::cruise::env::help_button $help_button
+
+	    destroy $w
+	}
+
+	pack $w.buttons.ok -side left -padx 10 -pady 5
+
+	button $w.buttons.cancel -text "Cancel" -width 10 \
+	    -command "destroy $w"
+	pack $w.buttons.cancel -side right -padx 10 -pady 5
+    }
+
+
+
+
     
     proc progress_bar {start_stop} {
 
@@ -361,6 +427,49 @@ namespace eval cruise::gui {
 
     }
 
+
+
+
+
+    proc create_help_win {hlp_txt} {
+
+	# help window for the widget-specific help button
+
+	variable root_frame
+
+	set w .widget_specific_help
+	catch {destroy $w}
+	toplevel $w
+	wm title $w "Help"
+	wm resizable $w no no
+	set x [expr [winfo rootx $root_frame] + 50]
+	set y [expr [winfo rooty $root_frame] + 50]
+	wm geometry $w "+$x+$y"
+	wm transient $w .
+	focus $w
+	
+	# help text #
+	frame $w.hlp_txt -relief groove -borderwidth 3
+	pack $w.hlp_txt -side top -fill x -anchor s -padx 5 -pady 5
+	text $w.hlp_txt.txt -yscrollcommand "$w.hlp_txt.scroll set" \
+	    -setgrid true -wrap word -width 40 -height 10
+	pack $w.hlp_txt.txt -expand yes -fill both -side left
+	$w.hlp_txt.txt insert end $hlp_txt
+	scrollbar $w.hlp_txt.scroll -command "$w.hlp_txt.txt yview"
+	pack $w.hlp_txt.scroll -side right -fill both -side left
+	
+
+	# buttons #
+	frame $w.buttons 
+	pack $w.buttons -side bottom -fill x -anchor s
+
+	button $w.buttons.ok -text "OK" -width 10 \
+	    -command "destroy $w"
+	pack $w.buttons.ok -side top -padx 10 -pady 5
+
+    }
+
+    
 }
 
 
