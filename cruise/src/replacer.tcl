@@ -19,7 +19,7 @@
 # replacer.tcl 
 # 
 
-# $Id: replacer.tcl,v 1.3 2002/02/23 18:41:04 klauko70 Exp $
+# $Id: replacer.tcl,v 1.4 2002/03/10 18:59:56 klauko70 Exp $
 #
 #
 
@@ -38,9 +38,12 @@ namespace eval cruise::replacer {
 		# check if a backup for filename has just been created 
 		set filename [::cruise::database::read $id filename]
 		if { [lsearch $backup_list $filename] == -1 } {
-		    # make backup
-		    file copy -force $filename $filename.bak
-		    lappend backup_list $filename
+		    # make backup (if required)
+		    if {$::cruise::env::create_backup_files} {
+			file copy -force $filename \
+			    $filename$::cruise::env::backup_files_extension
+			lappend backup_list $filename
+		    }
 		}
 
 		::cruise::replacer::put $id
