@@ -1,0 +1,26 @@
+! Syntax highlighting patterns for Cruise
+!
+! INSTALLATION
+!
+! Load this pattern by starting nedit with:
+!
+!       nedit -import <name of this file>
+!
+! Then, check that the patterns were loaded correctly, and choose Save Defaults
+! from the Preferences menu.  The new patterns will now be incorporated into
+! your own .nedit file, so the next time you start NEdit, you will no longer
+! need to use -import.
+!
+! These comments will not appear in your ~/.nedit
+!
+nedit.highlightPatterns: Cruise:1:0{\n\
+		Cruise-Line:"\\$c\\$":"\\n"::Numeric Const::\n\
+		no Cruise Line:".":::not_important::\n\
+		Cruise Keyword:"label|MARK|menubutton|entry":::Flag:Cruise-Line:\n\
+		Cruise option:"-[a-z]+ *([\\(\\[\\{""][^\\(\\[\\{""\\)\\]\\}]*[\\)\\]\\}""]|[^ ]*)":::Preprocessor1:Cruise-Line:\n\
+		Cruise Tcl:".":::Plain:Cruise-Line:\n\
+	}
+nedit.languageModes: 	Cruise::"\\$c\\$":::::
+nedit.styles: 	not_important:plum:Plain
+
+! generated with nxlang.perl 1.10
