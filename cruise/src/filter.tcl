@@ -19,7 +19,7 @@
 # filter.tcl 
 # 
 
-# $Id: filter.tcl,v 1.4 2002/03/10 19:02:00 klauko70 Exp $
+# $Id: filter.tcl,v 1.5 2002/03/15 19:11:22 klauko70 Exp $
 #
 #
 
@@ -67,6 +67,8 @@ namespace eval cruise::filter {
 		set ::cruise::env::column 1
 		set ::cruise::env::column_delimiter " "
 		set ::cruise::env::filename $file
+		set ::cruise::env::text ""
+		set ::cruise::env::help ""
 		
 		# send extracted line to the cruise interpreter #
 		if {[eval [list regexp $cruise_regexp $line_str] $regexp_vars ] == 1} {
