@@ -29,7 +29,8 @@ this is just another sample text
 // $c$ MARK -id lenny_mark -c #3
 #define lenny kravitz 
 
-// $c$ menubutton -t "select Baudrate:" -c #3 -ol {1200 9600 19200 38400}
+// $c$ set help "baudrate = bits/second to transmit or receive"
+// $c$ menubutton -t "select Baudrate:" -c #3 -ol {1200 9600 19200 38400} -h $help
 #define BAUDRATE 9600 
 
 // $c$ for {set i 1} {$i < 10} {incr i} {lappend loop_list $i}	   
@@ -45,7 +46,7 @@ int loops = 7 ;
 float pi = 3.1415 ;
 
 
-// $c$ entry -t "lenny:" -m lenny_mark 
+// $c$ entry -t "lenny:" -m lenny_mark -h "my favorite song from lenny kravitz is: 'dig in'"
 
 
 
