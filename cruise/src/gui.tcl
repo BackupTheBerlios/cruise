@@ -19,7 +19,7 @@
 # gui.tcl 
 # 
 
-# $Id: gui.tcl,v 1.5 2002/03/15 19:12:24 klauko70 Exp $
+# $Id: gui.tcl,v 1.6 2002/03/28 23:02:43 wolli Exp $
 #
 #
 
@@ -73,17 +73,30 @@ namespace eval cruise::gui {
     }
 
 
+    proc file_close {} {
+	set dummy [winfo children .]
+	    foreach window [winfo children .] {
+	        destroy $window
+	    }
+        ## Here we should initialize all variables, but there is no 
+        ## init procedure available 
+        create_main_win
+    }
 
-    proc file_open {} {
+
+    proc file_open args {
     
 	set types {
 	    {"All files"	{.*}}
 	}
-    
-	set filename [tk_getOpenFile -filetypes $types -parent . \
+    	if { $args == ""} {
+	
+		set filename [tk_getOpenFile -filetypes $types -parent . \
 			  -defaultextension .* -initialdir ./ ]
-	# ????? -multiple option added in Tcl/Tk 8.4a2 ?????
-
+		# ????? -multiple option added in Tcl/Tk 8.4a2 ?????
+	} else {
+		set filename $args
+	}
 
 	if [string compare $filename ""] {
 
@@ -243,7 +256,6 @@ namespace eval cruise::gui {
 
 
 
-
     proc file_preferences_userinterface {} {
 
 	variable root_frame
@@ -356,7 +368,9 @@ namespace eval cruise::gui {
 	
 	menu .mbar.file -tearoff 0
 	.mbar.file add command -label "Open..." -underline 0 \
-	    -command [namespace current]::file_open
+	    -command [namespace current]::file_open 
+	.mbar.file add command -label "Close..." -underline 0 \
+	    -command [namespace current]::file_close 
 	.mbar.file add command -label "Save" -underline 0 -state disabled \
 	    -command [namespace current]::file_save
 	.mbar.file add command -label "Save as..." -underline 1 -state disabled \
@@ -401,6 +415,7 @@ namespace eval cruise::gui {
 	# root frame for dynamically created gui
 	frame $root_frame -relief groove -borderwidth 3
 	pack $root_frame -side top -expand 1 -fill both -anchor n
+
 
 	# status bar
 	frame .status -relief flat
