@@ -1,0 +1,19 @@
+another test file
+
+// $c$ puts "this is a test text" 
+// $c$ set var 40
+ 
+a dummy string
+	
+// $c$ puts [expr $var + 2] 
+// $c$ puts "operating system: $env::os"
+
+// $c$ label -t "a label"
+
+# $c$ entry -t "on/off"
+ON
+// $c$ label -t "another boring label"
+
+------------------------------------
+
+

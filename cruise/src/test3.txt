@@ -1,0 +1,38 @@
+another test file
+
+// $c$ entry -t "_Tcl_" -c #3 -l [expr 2 + 3]
+// look at the above line reference !
+#define _Tcl_ TRUE
+
+a dummy string
+	
+// $c$ label -t "test-text" -c 42
+
+// $c$ label -l 42 -t "expect 42, but get: $env::line"
+
+// switch of reload button: $c$ set env::reload_button no 
+// $c$ entry -t "Limitations (yes/no)" -c #3
+#define LIMIT yes
+
+// switch on reload button: $c$ set env::reload_button yes 
+// $c$ entry -t "second ip number" -c #2 -cd .
+192.168.1.234
+
+// $c$ entry -t "cut another:" -c 16 -l +2
+//
+this is just another sample text
+
+
+; $c$ label -t "current line: $env::current_line"
+
+------------------------------------
+
+// $c$ menubutton -t "select Baudrate:" -c #3 -ol {1200 9600 19200 38400}
+#define BAUDRATE 9600
+
+// $c$ for {set i 1} {$i < 10} {incr i} {lappend loop_list $i}	   
+// $c$ menubutton -t "loops :" -c #4 -l +2 -ol $loop_list
+// 
+int loops = 5 ;
+
+

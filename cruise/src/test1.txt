@@ -1,0 +1,20 @@
+Just a test text
+
+and here: /* a comment */
+
+// $c$ puts "Tcl is great !" 
+// $c$ puts "[info hostname]" 
+
+   /*
+    * $c$ puts "file: $env::filename"
+    */
+	
+// $c$ set i 10 
+// $c$ while {$i >= 0} {puts "$i $env::line"; incr i -1}
+
+
+
+
+blub */
+
+
