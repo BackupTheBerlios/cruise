@@ -19,7 +19,7 @@
 # cruise.tcl 
 # 
 
-# $Id: cruise.tcl,v 1.2 2002/02/09 10:53:16 klauko70 Exp $
+# $Id: cruise.tcl,v 1.3 2002/02/23 18:31:26 klauko70 Exp $
 #
 #
 
@@ -138,6 +138,9 @@ namespace eval cruise {
 	variable prolog
 	eval $prolog
 
+	database::write $interp::id need_replacement no
+
+
 	frame $w.$f -relief groove -borderwidth 1
 	pack $w.$f -expand 1 -fill both
 
@@ -154,6 +157,9 @@ namespace eval cruise {
 
 	variable prolog
 	eval $prolog
+
+	database::write $interp::id need_replacement yes
+
 
 	frame $w.$f -relief groove -borderwidth 1
 	pack $w.$f -expand 1 -fill both
@@ -188,6 +194,9 @@ namespace eval cruise {
 
 	variable prolog
 	eval $prolog
+
+	database::write $interp::id need_replacement yes
+
 
 	frame $w.$f -relief groove -borderwidth 1
 	pack $w.$f -expand 1 -fill both
