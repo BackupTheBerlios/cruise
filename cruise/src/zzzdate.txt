@@ -1,0 +1,23 @@
+#
+#This is a bash script
+
+#$c$ set seconds [clock seconds]
+#$c$ set past   [clock format [expr 3600 * int($seconds/3600)] -format "%H:%M Uhr"]
+#$c$ set now    [clock format $seconds -format "%H:%M Uhr"]
+#$c$ set future [clock format [expr 3600 + 3600 * int($seconds/3600)] -format "%H:%M Uhr"]
+#$c$ lappend list $past $now $future
+#$c$ label -t "Aktuelle Zeit: $now"
+
+#$c$ menubutton -t "Welche Zeit anzeigen ?" -ol $list -cd "\"" -c #2
+echo "11:20 Uhr"
+
+
+
+
+
+
+
+
+
+
+
