@@ -19,7 +19,7 @@
 # filter.tcl 
 # 
 
-# $Id: filter.tcl,v 1.2 2002/02/09 10:53:53 klauko70 Exp $
+# $Id: filter.tcl,v 1.3 2002/02/23 18:34:06 klauko70 Exp $
 #
 #
 
@@ -50,6 +50,9 @@ namespace eval cruise::filter {
 	}
 
 	while {[eof $file_hdl] == 0} {
+
+	    update 
+
 	    gets $file_hdl line_str
 	    incr filter_line
 	    
