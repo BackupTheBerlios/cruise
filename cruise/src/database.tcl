@@ -19,7 +19,7 @@
 # database.tcl 
 # 
 
-# $Id: database.tcl,v 1.2 2002/02/09 10:53:40 klauko70 Exp $
+# $Id: database.tcl,v 1.3 2002/02/23 18:32:47 klauko70 Exp $
 #
 #
 
@@ -35,11 +35,20 @@ namespace eval cruise::database {
     }
 
 
+
     proc read {id var} {
 	
 	variable ::cruise::database::$id.$var
 	
-	return [set ::cruise::database::$id.$var]
+
+	if [ catch {set ::cruise::database::$id.$var} ] {
+	    # variable does not exist #
+	    set retval 0
+	} else {
+	    set retval [set ::cruise::database::$id.$var]
+	}
+
+	return $retval 
     }
 
 
