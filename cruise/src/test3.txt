@@ -2,7 +2,7 @@ another test file
 
 // $c$ entry -t "_Tcl_" -c #3 -l [expr 2 + 3]
 // look at the above line reference !
-#define _Tcl_ FALSE 
+#define _Tcl_ TRUE 
 
 a dummy string
 	
@@ -26,6 +26,8 @@ this is just another sample text
 ; $c$ label -t "current line: $env::current_line"
 
 ------------------------------------
+// $c$ MARK -id lenny_mark -c #3
+#define lenny kravitz 
 
 // $c$ menubutton -t "select Baudrate:" -c #3 -ol {1200 9600 19200 38400}
 #define BAUDRATE 9600 
@@ -34,6 +36,66 @@ this is just another sample text
 // $c$ menubutton -t "loops :" -c #4 -l +2 -ol $loop_list
 // 
 int loops = 7 ;
+
+// $c$ entry -t "pi:" -m pi_mark
+
+
+
+// $c$ MARK -id pi_mark -c #4
+float pi = 3.1415 ;
+
+
+// $c$ entry -t "lenny:" -m lenny_mark 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
