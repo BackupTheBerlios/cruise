@@ -19,7 +19,7 @@
 # cruise.tcl 
 # 
 
-# $Id: cruise.tcl,v 1.5 2002/03/15 19:05:39 klauko70 Exp $
+# $Id: cruise.tcl,v 1.6 2002/03/28 18:37:11 klauko70 Exp $
 #
 #
 
@@ -66,6 +66,8 @@ namespace eval cruise {
 	# additional parameter 
 	variable text              "not specified"
 	variable option_list       ""
+	variable help              ""
+	variable command           ""
     }
 
 
@@ -101,6 +103,11 @@ namespace eval cruise {
 	proc -h {value} {
 	    variable ::cruise::env::help
 	    set ::cruise::env::help $value
+	}
+
+	proc -cmd {value} {
+	    variable ::cruise::env::command
+	    set ::cruise::env::command $value
 	}
 
 	proc -c {value} {
@@ -288,6 +295,26 @@ namespace eval cruise {
 	eval $epilog
     }
 
+
+
+
+    proc button {args} {
+	
+	variable env::text
+	variable env::command
+	
+	variable prolog
+	eval $prolog
+
+	database::write $interp::id need_replacement no
+
+
+	frame $w.$f -relief groove -borderwidth 1
+	pack $w.$f -expand 1 -fill both
+
+	::button $w.$f.l -text $env::text -command "exec $env::command"
+	pack $w.$f.l -side left
+    }
 
 
 
