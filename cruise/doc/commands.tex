@@ -1,74 +1,85 @@
 %
-% $Id: commands.tex,v 1.4 2002/02/12 22:15:32 wolli Exp $
+% $Id: commands.tex,v 1.5 2002/03/24 01:03:38 wolli Exp $
 %
 \chapter{Cruise-Kommandos}
-\section{Allgemein}
+\section{Optionen}
 
 \subsection{Source Referenz}
 
-Jede Referenzangabe wird durch eine Referenz-Typ Angabe eingeleitet. 
-Diese Typ Angabe setzt sich aus einem oder mehreren Buchstaben gefolgt
-von einem Doppelpunkt zusammen. 
+Jede Referenzangabe wird durch eine Referenz-Typ-Angabe eingeleitet. 
+Die Typ-Angabe wird in Form einer Option dem Cruise-Kommando mitgeteilt. 
+
 
 \begin{description}
 \item[Dateiname:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>f:\am{filename}\\
+Syntax:		\>-f\am{filename}\\
 default-Wert:	\>aktuelle Datei\\
-Beispiel:	\>\verb#f:~/.bashrc#\\
-		\>\verb#f:/usr/local/share/readme.txt#\\
+Beispiel:	\>\verb#-f ~/.bashrc#\\
+		\>\verb#-f /usr/local/share/readme.txt#\\
 \end{tabbing}
+Mit dieser Option wird wird auf eine bestimmte Datei verwiesen. Existiert diese Datei nicht, so wird eine Fehlermeldung
+ausgegeben.
 
 \item[Zeile:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>l:\am{absolute\_line}\\
-		\>l:+\am{relative\_line}\\
-		\>l:-\am{relative\_line}\\
-default-Wert:	\>l:+1	(nächste Zeile)\\
-Beispiel:	\>\verb#l:4  #(Zeile 4)\\
-		\>\verb#l:+2 #(die übernächste Zeile)\\
-		\>\verb#l:-1 #(die vorige Zeile)\\
+Syntax:		\>-l \am{absolute\_line}\\
+		\>-l +\am{relative\_line}\\
+		\>-l -\am{relative\_line}\\
+default-Wert:	\>-l +1	(nächste Zeile)\\
+Beispiel:	\>\verb#-l 4  #(Zeile 4)\\
+		\>\verb#-l +2 #(die übernächste Zeile)\\
+		\>\verb#-l -1 #(die vorige Zeile)\\
 \end{tabbing}
+Mit dieser Option wird auf eine Zeile verwiesen. Ist die referenzierte Zeilennummer größer, als die Anzahl der Zeilen in
+der referenzierten Datei so wird auf die letzte Zeile verwiesen. Ist die referenzierte Zeilennummer negativ, so wird auf
+die erste Zeile der Datei verwiesen.
 
 
 \item[Spalte:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>c:\am{absolute\_column}\\
-		\>c:\#\am{field}\\
-default-Wert:	\>c:\#1  (erstes Feld)\\
-Beispiel:	\>\verb#c:3  #(dritte Spalte)\\
-		\>\verb+c:#4  +(viertes Feld)\\
+Syntax:		\>-c  \am{absolute\_column}\\
+		\>-c \#\am{field}\\
+default-Wert:	\>-c \#1  (erstes Feld)\\
+Beispiel:	\>\verb#-c 3  #(dritte Spalte)\\
+		\>\verb+-c #4 +(viertes Feld)\\
 \end{tabbing}
+Mit dieser Option wird auf eine Spalte verwiesen. Ist die referenzierte Spaltennummer größer, als die Anzahl der Spalten in
+der referenzierten Zeile so wird auf die letzte Spalte verwiesen. Ist die referenzierte Spaltennummer negativ, so wird auf
+die erste Spalte der Zeile verwiesen.
+
 	
 \item[Spaltentrenner:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>cd:\am{column\_delimiter}\\
-default-Wert:	\>cd:ws  (whitespace: Tabulator und Leerzeichen)\\
-Beispiel:	\>\verb#cd:","  #(Komma)\\
-		\>\verb#cd:" "  #(ein Leerzeichen)\\
+Syntax:		\>-cd \am{column\_delimiter}\\
+default-Wert:	\>-cd ws  (whitespace: Tabulator und Leerzeichen)\\
+Beispiel:	\>\verb#-cd ","  #(Komma)\\
+		\>\verb#-cd " "  #(ein Leerzeichen)\\
 \end{tabbing}
+
+
 Idee: Regulärer Ausdruck als Spaltentrennerdefinition !
 
 
 \item[Marke:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>m:\am{mark}\\
+Syntax:		\>-m \am{mark}\\
 default-Wert:	\>-  (kein default-Wert)\\
-Beispiel:	\>\verb#m:mark\_1#\\
+Beispiel:	\>\verb#-m mark_1#\\
 \end{tabbing}
 
 
 \item[URL:]
 \begin{tabbing}
 \hspace{10em}\=\\
-Syntax:		\>u:\am{url}\\
+Syntax:		\>-u \am{url}\\
 default-Wert:	\>-  (kein default-Wert)\\
-Beispiel:	\>\verb#u:ftp://ftp.suse.de/misc/readme.txt#\\
+Beispiel:	\>\verb#-u ftp://ftp.suse.de/misc/readme.txt#\\
 \end{tabbing}
 
 \item[Zeiger oben:]
@@ -97,11 +108,11 @@ Annahme: das cruise Token wäre "\$c\$".
 Mit folgendem Beispiel wird auf die Zahl hinter 'MAX\_NUM' referenziert.
 
 \begin{verbatim}
-$c$ listbox {214 220 417 420} c:#3
+$c$ menubutton -c #3 -ol {110 220 214 889}
 #define MAX_NUM 214
 \end{verbatim}
 \begin{itemize}
-\item c:\#3 verweist auf das dritte Feld
+\item -c \#3 verweist auf das dritte Feld
 \item Dateiname wurde nicht angegeben, also aktuelle Datei
 \item Zeile wurde nicht angegeben, also nächste Zeile
 \item Spaltentrenner wurde nicht angegeben, also whitespace
@@ -115,18 +126,53 @@ Gleicheitszeichen referenziert.
 
 
 \begin{verbatim}
-$c$ listbox {3.14 3.141 3.1415 3.14159} c:#4 l:+2
+$c$ menubutton -c #4 -l +2 -ol {3.14 3.141 3.1415 3.14159} 
 // declaration and definition of PI
 double pi = 3.1415 ;
 \end{verbatim}
 \begin{itemize}
-\item c:\#4 verweist auf das vierte Feld
-\item l:+2 verweist auf die übernächste Zeile
+\item -c \#4 verweist auf das vierte Feld
+\item -l +2 verweist auf die übernächste Zeile
 \end{itemize}
 
 
+\subsection{Textoptionen}
+
+Mit einer Textoption werden Textinformationen für den Benutzer an das jeweilige Kommando übergeben.
+
+\begin{description}
+\item[Beschriftung:]
+\begin{tabbing}
+\hspace{10em}\=\\
+Syntax:		\>-t\am{text}\\
+default-Wert:	\>-\\
+Beispiel:	\>\verb#-t "Neuer Wert:"#\\
+
+\end{tabbing}
+Der mit der Option angegebene Text wird zur Beschriftung des Bedienelementes verwendet.
+
+\item[Hilfetext:]
+\begin{tabbing}
+\hspace{10em}\=\\
+Syntax:		\>-h\am{text}\\
+default-Wert:	\>-\\
+Beispiel:	\>\verb#-h "Wählen sie einen Wert zwischen 0 und 255 !"#\\
+		\>\verb#-h $HELPTEXT#\\
+\end{tabbing}
+Wird mit einem Kommando ein Bedienelement mit Hilfeknopf erzeugt, so wird mit diesem Kommando der Text übergeben, der im Textfenster des Hilfeknopfs erscheinen soll.
 
 
+\item[Parameterliste:]
+\begin{tabbing}
+\hspace{10em}\=\\
+Syntax:		\>-ol\am{text1 text2 text3 text4}\\
+default-Wert:	\>-\\
+Beispiel:	\>\verb#-ol {9600 19200 57200}#\\
+
+\end{tabbing}
+Kommandos welche eine Liste von auswählbaren Texten anbieten erhalten mit dieser Option die Auswahlliste.
+
+\end{description}
 
 
 
