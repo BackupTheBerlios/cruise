@@ -19,7 +19,7 @@
 # filter.tcl 
 # 
 
-# $Id: filter.tcl,v 1.3 2002/02/23 18:34:06 klauko70 Exp $
+# $Id: filter.tcl,v 1.4 2002/03/10 19:02:00 klauko70 Exp $
 #
 #
 
@@ -34,41 +34,50 @@ namespace eval cruise::filter {
 	
 	variable cruise_regexp
 	variable cruise_regexp_field
-
-	variable regexp_vars 
-	variable file_hdl [open $file]
 	variable line_str
-
-	variable ::cruise::env::current_line 0
-	variable ::cruise::env::line 0
-	set filter_line 0
 	variable ::cruise::env::filename $file
+	variable regexp_vars 
 	
 	set regexp_vars complete
 	for {set x 1} {$x <= $cruise_regexp_field} {incr x} {
 	    lappend regexp_vars part($x)
 	}
 
-	while {[eof $file_hdl] == 0} {
+	set interp_method preproc
 
-	    update 
+	# read the file two times: first time for preprocessing 
+	for {set run 0} {$run < 2} {incr run} {
 
-	    gets $file_hdl line_str
-	    incr filter_line
+	    variable file_hdl [open $file]
 	    
-	    # reset environment variables #
-	    set ::cruise::env::current_line $filter_line
-	    set ::cruise::env::line [expr $filter_line + 1]
-	    set ::cruise::env::column 1
-	    set ::cruise::env::column_delimiter " "
-	    set ::cruise::env::filename $file
-	    
-	    # send extracted line to the cruise interpreter #
-	    if {[eval [list regexp $cruise_regexp $line_str] $regexp_vars ] == 1} {
-		::cruise::interp::execute $part($cruise_regexp_field)
+	    variable ::cruise::env::current_line 0
+	    variable ::cruise::env::line 0
+	    set filter_line 0
+
+	    while {[eof $file_hdl] == 0} {
+		
+		update 
+		
+		gets $file_hdl line_str
+		incr filter_line
+		
+		# reset environment variables #
+		set ::cruise::env::current_line $filter_line
+		set ::cruise::env::line [expr $filter_line + 1]
+		set ::cruise::env::column 1
+		set ::cruise::env::column_delimiter " "
+		set ::cruise::env::filename $file
+		
+		# send extracted line to the cruise interpreter #
+		if {[eval [list regexp $cruise_regexp $line_str] $regexp_vars ] == 1} {
+		    ::cruise::interp::$interp_method $part($cruise_regexp_field)
+		}
 	    }
+	    
+	    close $file_hdl
+
+	    set interp_method execute
 	}
-	close $file_hdl
     }
 
 

@@ -19,7 +19,7 @@
 # interp.tcl 
 # 
 
-# $Id: interp.tcl,v 1.2 2002/02/09 10:55:10 klauko70 Exp $
+# $Id: interp.tcl,v 1.3 2002/03/10 18:57:51 klauko70 Exp $
 #
 #
 
@@ -28,19 +28,36 @@ namespace eval cruise::interp {
 
 
     variable id 0
-    
+
+    # list of preprocessor commands
+    variable preproc_cmds [list MARK]
+
+
+
+    proc preproc {cmd} {
+
+	variable ::cruise::interp::id
+	variable preproc_cmds
+
+	# preprocessing
+	if {[lsearch -exact $preproc_cmds [lindex [split $cmd] 0]] != -1} {
+	    incr ::cruise::interp::id
+	    namespace eval ::cruise $cmd
+	}
+    }
+
+
 
     proc execute {cmd} {
 
 	variable ::cruise::interp::id
-
-	# preprocessing
-	# not yet implemented
-
+	variable preproc_cmds
 
 	# execute cruise command inside the namespace ::cruise
-	incr ::cruise::interp::id
-	namespace eval ::cruise $cmd
+	if {[lsearch -exact $preproc_cmds [lindex [split $cmd] 0]] == -1} {
+	    incr ::cruise::interp::id
+	    namespace eval ::cruise $cmd
+	}
     }
 
 }
